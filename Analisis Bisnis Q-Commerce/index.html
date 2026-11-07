@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALFARGO - Arsitektur Jaringan Q-Commerce</title>
+    <meta name="description" content="Struktur jaringan rantai pasok Q-Commerce: Warehouse, Mother Hub, dan Hub">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar" role="navigation" aria-label="Navigasi Utama">
+        <div class="nav-container">
+
+            <!-- Brand Logo -->
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                        </path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                </div>
+                <div>ALFARGO <span>Logistics</span></div>
+            </a>
+
+            <!-- Menu Utama: Beranda | Warehouse | Mother Hub | Hub -->
+            <ul class="nav-menu" role="tablist">
+                <li class="nav-item" data-target="beranda" role="presentation">
+                    <button class="nav-btn" role="tab" id="tab-beranda" aria-controls="beranda"
+                        aria-selected="false">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Beranda
+                    </button>
+                </li>
+
+                <li class="nav-item" data-target="warehouse" role="presentation">
+                    <button class="nav-btn active" role="tab" id="tab-warehouse" aria-controls="warehouse"
+                        aria-selected="true">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                        Warehouse
+                        <span class="pill-badge">Tier 1</span>
+                    </button>
+                </li>
+
+                <li class="nav-item" data-target="mother-hub" role="presentation">
+                    <button class="nav-btn" role="tab" id="tab-mother-hub" aria-controls="mother-hub"
+                        aria-selected="false">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
+                        Mother Hub
+                        <span class="pill-badge">Tier 2</span>
+                    </button>
+                </li>
+
+                <li class="nav-item" data-target="hub" role="presentation">
+                    <button class="nav-btn" role="tab" id="tab-hub" aria-controls="hub" aria-selected="false">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                        Hub (Dark Store)
+                        <span class="pill-badge">Tier 3</span>
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Network Status Indicator -->
+            <div class="nav-meta">
+                <span class="status-dot"></span>
+                <span>Jaringan Aktif (Live)</span>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- ================= MAIN CONTAINER ================= -->
+    <main class="container">
+
+        <!-- ==============================================================
+         TAB 0: BERANDA (Alur Distribusi Q-Commerce)
+         ============================================================== -->
+        <article class="tab-panel" id="beranda" role="tabpanel" aria-labelledby="tab-beranda">
+
+            <!-- Interactive Supply Chain Topology Flow Bar -->
+            <section class="flow-topology" aria-label="Alur Rantai Pasok">
+                <div class="topology-header">
+                    <div class="topology-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="6" y1="3" x2="6" y2="15"></line>
+                            <circle cx="18" cy="6" r="3"></circle>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <path d="M18 9a9 9 0 0 1-9 9"></path>
+                        </svg>
+                        Alur Distribusi Q-Commerce
+                    </div>
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">Klik node di bawah untuk berpindah menu</span>
+                </div>
+
+                <div class="topology-steps">
+                    <!-- Supplier -->
+                    <div class="topology-node node-static">
+                        <div class="node-label">Sumber Pasokan</div>
+                        <div class="node-name">Supplier / Principal</div>
+                    </div>
+
+                    <div class="topology-arrow">➔</div>
+
+                    <!-- 1. Warehouse -->
+                    <div class="topology-node node-wh active" data-target="warehouse">
+                        <div class="node-label">Menu 1 • Tier 1</div>
+                        <div class="node-name">Warehouse (Pusat)</div>
+                    </div>
+
+                    <div class="topology-arrow">➔</div>
+
+                    <!-- 2. Mother Hub -->
+                    <div class="topology-node node-mh" data-target="mother-hub">
+                        <div class="node-label">Menu 2 • Tier 2</div>
+                        <div class="node-name">Mother Hub (Regional)</div>
+                    </div>
+
+                    <div class="topology-arrow">➔</div>
+
+                    <!-- 3. Hub -->
+                    <div class="topology-node node-hub" data-target="hub">
+                        <div class="node-label">Menu 3 • Tier 3</div>
+                        <div class="node-name">Hub (Dark Store)</div>
+                    </div>
+
+                    <div class="topology-arrow">➔</div>
+
+                    <!-- Customer -->
+                    <div class="topology-node node-static">
+                        <div class="node-label">Pelanggan Akhir</div>
+                        <div class="node-name">Pengantaran 15 Mnt</div>
+                    </div>
+                </div>
+            </section>
+
+        </article>
+
+        <!-- ==============================================================
+         TAB 1: WAREHOUSE (Gudang Pusat / Central Fulfillment Center)
+         ============================================================== -->
+        <article class="tab-panel active" id="warehouse" role="tabpanel" aria-labelledby="tab-warehouse">
+
+            <!-- Tier Hero -->
+            <section class="tier-hero wh-theme">
+                <div class="tier-tagline">Tier 1 • Central Fulfillment Center</div>
+                <div class="tier-title-row">
+                    <div>
+                        <h1 class="tier-title">Warehouse (Gudang Induk)</h1>
+                        <p class="tier-subtitle">
+                            Pusat penyimpanan stok massal berskala besar (Bulk Storage), penerimaan langsung dari
+                            supplier FMCG & manufaktur, serta pengelolaan inventaris cadangan untuk seluruh wilayah.
+                        </p>
+                    </div>
+                    <div class="tier-meta-badges">
+                        <div class="meta-chip">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            Lokasi: <strong>Suburban / Pinggir Kota</strong>
+                        </div>
+                        <div class="meta-chip">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            Siklus: <strong>H-1 s/d Harian</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ringkasan Metrik Operasional Utama Warehouse -->
+            <section class="stats-grid wh-theme" aria-label="Metrik Operasional Warehouse">
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">Radius Distribusi</span>
+                        <div class="stat-icon">📍</div>
+                    </div>
+                    <div class="stat-value">100 - 300 KM</div>
+                    <div class="stat-label">Jarak tempuh armada berat antar-kota / regional</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">Kecepatan Inbound QC</span>
+                        <div class="stat-icon">⚡</div>
+                    </div>
+                    <div class="stat-value">&lt; 3 - 4 Jam</div>
+                    <div class="stat-label">Waktu verifikasi & audit FEFO per truk muatan</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">Kapasitas Penyimpanan</span>
+                        <div class="stat-icon">🏬</div>
+                    </div>
+                    <div class="stat-value">50.000+ Palet</div>
+                    <div class="stat-label">Total kapasitas simpan massal (bulk storage)</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">Akurasi Inventori</span>
+                        <div class="stat-icon">🎯</div>
+                    </div>
+                    <div class="stat-value">99.98%</div>
+                    <div class="stat-label">Tingkat akurasi stok sistem WMS terintegrasi</div>
+                </div>
+            </section>
+
+            <!-- ================= AKTOR OPERASIONAL WAREHOUSE ================= -->
+            <section class="actors-section wh-theme" aria-label="Aktor Operasional Warehouse">
+                <div class="actors-header">
+                    <div class="actors-title-group">
+                        <h2 class="actors-title">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Aktor & Peran Operasional Warehouse
+                        </h2>
+                        <span class="actors-subtitle">Struktur SDM dan tim pelaksana utama yang mengelola fasilitas gudang induk</span>
+                    </div>
+                    <span class="actors-count-badge">4 Aktor Utama</span>
+                </div>
+
+                <div class="actors-grid">
+                    <!-- Aktor 1 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">👔</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Warehouse Manager / Kepala Gudang</h3>
+                                <span class="actor-role-tag">Leadership & Operations</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    Bertanggung jawab atas keseluruhan operasional gudang, KPI (Key Performance Indicators), ketepatan stok, dan keselamatan kerja.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Aktor 2 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">🎯</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Inventory Control Specialist</h3>
+                                <span class="actor-role-tag">Stock Control & Audit</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    Mengelola stock opname, memprediksi kebutuhan barang, dan meminimalkan kerugian akibat barang kadaluwarsa atau rusak.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Aktor 3 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">📦</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Inbound & Outbound Team</h3>
+                                <span class="actor-role-tag">Penerimaan & Pengiriman</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    Staf yang menangani penerimaan barang dari supplier (inbound) dan penyusunan barang yang akan dikirim ke Mother Hub.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Aktor 4 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">🚜</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Operator Forklift atau Alat Berat</h3>
+                                <span class="actor-role-tag">Heavy Equipment Operator</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    SDM tersertifikasi untuk memindahkan barang dalam skala besar.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </section>
+
+        </article>
+
+
+        <!-- ==============================================================
+         TAB 2: MOTHER HUB (Pusat Distribusi Regional / Sortation Center)
+         ============================================================== -->
+        <article class="tab-panel" id="mother-hub" role="tabpanel" aria-labelledby="tab-mother-hub">
+
+            <!-- Tier Hero -->
+            <section class="tier-hero mh-theme">
+                <div class="tier-tagline">Tier 2 • Regional Sorting & Cross-Dock Hub</div>
+                <div class="tier-title-row">
+                    <div>
+                        <h1 class="tier-title">Mother Hub (Pusat Regional)</h1>
+                        <p class="tier-subtitle">
+                            Pusat konsolidasi dan penyortiran cepat tingkat kota/kabupaten. Bertindak sebagai jembatan
+                            penghubung antara Warehouse utama dengan puluhan Hub (Dark Store) lokal.
+                        </p>
+                    </div>
+                    <div class="tier-meta-badges">
+                        <div class="meta-chip">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            Lokasi: <strong>Perbatasan Kota / Akses Tol</strong>
+                        </div>
+                        <div class="meta-chip">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            Frekuensi: <strong>3 - 5x Pengiriman / Hari</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ringkasan Metrik Operasional Utama Mother Hub -->
+            <section class="stats-grid mh-theme" aria-label="Metrik Operasional Mother Hub">
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">Radius Layanan Antar-Hub</span>
+                        <div class="stat-icon">📍</div>
+                    </div>
+                    <div class="stat-value">15 - 35 KM</div>
+                    <div class="stat-label">Jarak jangkau distribusi ke puluhan Hub perkotaan</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">Kecepatan Sortir Batch</span>
+                        <div class="stat-icon">⏱️</div>
+                    </div>
+                    <div class="stat-value">&lt; 45 Mnt</div>
+                    <div class="stat-label">Waktu pemilahan barang per rute pengiriman Hub</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">Alur Harian</span>
+                        <div class="stat-icon">🔄</div>
+                    </div>
+                    <div class="stat-value">35.000+ Item</div>
+                    <div class="stat-label">Volume produk tersortir & transit per hari</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">Jaringan Hub Terhubung</span>
+                        <div class="stat-icon">🏢</div>
+                    </div>
+                    <div class="stat-value">15 - 30 Hub</div>
+                    <div class="stat-label">Dark store lokal aktif yang dipasok terjadwal</div>
+                </div>
+            </section>
+
+            <!-- ================= AKTOR OPERASIONAL MOTHER HUB ================= -->
+            <section class="actors-section mh-theme" aria-label="Aktor Operasional Mother Hub">
+                <div class="actors-header">
+                    <div class="actors-title-group">
+                        <h2 class="actors-title">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Aktor & Peran Operasional Mother Hub
+                        </h2>
+                        <span class="actors-subtitle">Tim lintas fungsi yang menggerakkan konsolidasi, pemilahan batch cepat, dan pasokan regional</span>
+                    </div>
+                    <span class="actors-count-badge">4 Aktor Utama</span>
+                </div>
+
+                <div class="actors-grid">
+                    <!-- Aktor 1 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">🏪</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Mother Hub Manager / Store Manager</h3>
+                                <span class="actor-role-tag">Hub Operations Leader</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    Mengawasi operasional harian Mother Hub, memantau fulfillment rate (kecepatan kemas), dan memimpin tim di area tersebut.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Aktor 2 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">⚡</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Picker (Pengambil Barang)</h3>
+                                <span class="actor-role-tag">Rapid Item Sorting</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    Staf yang bertugas menerima barang dari Kurir Mother Hub dan diletakkan ke rak berdasarkan kategori, mengambil barang di rak berdasarkan pesanan dari hub. Kecepatan memetik barang (picking time) diukur dalam hitungan detik.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Aktor 3 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">📦</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Packer (Pengemas Barang)</h3>
+                                <span class="actor-role-tag">Secure Packing & Staging</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    Staf yang mengemas produk ke dalam tempat aman seperti kardus dan sebagainya untuk diserahkan ke kurir hub.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Aktor 4 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">🚚</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Kurir</h3>
+                                <span class="actor-role-tag">Inbound Shuttler</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    Untuk mengambil barang ke warehouse.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </section>
+
+        </article>
+
+
+        <!-- ==============================================================
+         TAB 3: HUB (Dark Store / Micro-Fulfillment Center)
+         ============================================================== -->
+        <article class="tab-panel" id="hub" role="tabpanel" aria-labelledby="tab-hub">
+
+            <!-- Tier Hero -->
+            <section class="tier-hero hub-theme">
+                <div class="tier-tagline">Tier 3 • Micro-Fulfillment & Dark Store</div>
+                <div class="tier-title-row">
+                    <div>
+                        <h1 class="tier-title">Hub (Dark Store / Micro-Hub)</h1>
+                        <p class="tier-subtitle">
+                            Ujung tombak model bisnis Q-Commerce. Terletak di tengah kawasan padat penduduk untuk
+                            menjamin pesanan pelanggan sampai di depan pintu dalam hitungan menit (10 - 25 menit).
+                        </p>
+                    </div>
+                    <div class="tier-meta-badges">
+                        <div class="meta-chip">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            Lokasi: <strong>Pusat Pemukiman & Perumahan</strong>
+                        </div>
+                        <div class="meta-chip">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            SLA Delivery: <strong>10 - 25 Menit</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ringkasan Metrik Operasional Utama Hub -->
+            <section class="stats-grid hub-theme" aria-label="Metrik Operasional Hub">
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">Radius Pengantaran</span>
+                        <div class="stat-icon">🛵</div>
+                    </div>
+                    <div class="stat-value">0 - 7 KM</div>
+                    <div class="stat-label">Jarak tempuh kurir motor ke alamat pemesan</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">Kecepatan Pengantaran (SLA)</span>
+                        <div class="stat-icon">⚡</div>
+                    </div>
+                    <div class="stat-value">0 - 15 Menit</div>
+                    <div class="stat-label">Total durasi sejak pesanan masuk hingga tiba</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">Kecepatan Pick & Pack</span>
+                        <div class="stat-icon">⏱️</div>
+                    </div>
+                    <div class="stat-value">&lt; 2.5 Mnt</div>
+                    <div class="stat-label">Durasi staf mengambil produk & mengemas ke kantong</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-head">
+                        <span class="stat-label">On-Time Delivery Rate</span>
+                        <div class="stat-icon">🏆</div>
+                    </div>
+                    <div class="stat-value">98.4%</div>
+                    <div class="stat-label">Tingkat ketepatan waktu pengiriman ke konsumen</div>
+                </div>
+            </section>
+
+            <!-- ================= AKTOR OPERASIONAL HUB ================= -->
+            <section class="actors-section hub-theme" aria-label="Aktor Operasional Hub">
+                <div class="actors-header">
+                    <div class="actors-title-group">
+                        <h2 class="actors-title">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Aktor & Peran Operasional Hub (Dark Store)
+                        </h2>
+                        <span class="actors-subtitle">Garda depan pemenuhan pesanan kilat 10 - 25 menit langsung ke tangan pelanggan</span>
+                    </div>
+                    <span class="actors-count-badge">4 Aktor Utama</span>
+                </div>
+
+                <div class="actors-grid">
+                    <!-- Aktor 1 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">🚛</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Kurir Pengambil Barang</h3>
+                                <span class="actor-role-tag">Replenishment Runner</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    Untuk mengambil barang ke Mother Hub.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Aktor 2 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">🛵</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Kurir Pengirim Barang</h3>
+                                <span class="actor-role-tag">Last-Mile Rider</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    Mengantarkan pesanan belanja kilat langsung ke depan pintu pelanggan dalam radius 2 - 4 KM dengan standar SLA 10 - 25 menit.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Aktor 3 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">🛒</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Picker (Pengambil barang)</h3>
+                                <span class="actor-role-tag">Instant Order Picking</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    Staf yang bertugas menerima barang dari kurir hub dan meletakkan ke rak berdasarkan kategori, mengambil barang di rak berdasarkan pesanan dari pelanggan.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Aktor 4 -->
+                    <div class="actor-card">
+                        <div class="actor-head">
+                            <div class="actor-icon">🛍️</div>
+                            <div class="actor-info">
+                                <h3 class="actor-name">Packer (Pengemas Barang)</h3>
+                                <span class="actor-role-tag">Quick Bagging & Safety</span>
+                            </div>
+                        </div>
+                        <details class="actor-dropdown">
+                            <summary class="actor-dropdown-btn">
+                                <span class="btn-text-closed">Lihat Deskripsi</span>
+                                <span class="btn-text-open">Tutup Deskripsi</span>
+                                <svg class="actor-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="actor-desc-wrap">
+                                <p class="actor-desc">
+                                    Staf yang bertugas mengemas produk ke kantong belanja dengan aman.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </section>
+
+        </article>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+        <p>© 2026 ALFARGO Q-Commerce Business Architecture. Sistem Logistik Cepat Multi-Tier:
+            <strong>Warehouse</strong>, <strong>Mother Hub</strong>, dan <strong>Hub</strong>.
+        </p>
+    </footer>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>
